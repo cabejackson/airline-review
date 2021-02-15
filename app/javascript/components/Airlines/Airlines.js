@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
+import Airline from './Airline';
 
 const Airlines = () => {
     //set initialliny to an empty array, 
@@ -20,8 +21,14 @@ const Airlines = () => {
         //the effect should only fire when the value changes
     }, [airlines.length])
 
-    const list = airlines.map(item => {
-        return (<li key={item.attributes.name}>{item.attributes.name}</li>)
+    const grid = airlines.map(item => {
+        return (
+            <Airline
+                key={item.attributes.name}
+                attributes={item.attributes}
+            />
+
+        )
     })
 
 
@@ -32,7 +39,7 @@ const Airlines = () => {
                 <div className="subheader"> Honest, unbiased airline reviews</div>
             </div>
             <div className="grid">
-                <ul>{list}</ul>
+                <ul>{grid}</ul>
             </div>
         </div>
     )
