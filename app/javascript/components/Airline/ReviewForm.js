@@ -125,7 +125,7 @@ const ReviewForm = (props) => {
                 <input
                     type="radio"
                     value={score}
-                    checked={props.review.score == score}
+                    checked={props.review.score === score}
                     name="rating"
                     onChange={() => console.log('selected:', score)}
                     id={`rating-${score}`} />
@@ -163,7 +163,9 @@ const ReviewForm = (props) => {
                         </RatingBox>
                     </RatingContainer>
                 </Field>
-                <SubmitBtn type="submit">Submit Your Review</SubmitBtn>
+                <div>
+                    <button type="submit">Submit Your Review</button>
+                </div>
             </form>
 
         </Wrapper>

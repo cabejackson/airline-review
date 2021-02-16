@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import Header from './Header'
-import styled from 'styled-components';
 import ReviewForm from './ReviewForm';
+import Review from './Review';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
 margin-left: auto;
@@ -27,25 +28,14 @@ padding-left: 50px;
 const Airline = (props) => {
 
     const [airline, setAirline] = useState({})
-    const [review, setReview] = useState({
-        title: "",
-        description: "",
-        score: 0,
-
-    })
+    const [review, setReview] = useState({ title: "", description: "", score: 0, })
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
-        // api/v1/airlines/:slug
-        //airline/united-airlines
-        // console.log(props)
-
         const slug = props.match.params.slug
         //console.log("this is slug:", slug)
-
         const url = `/api/v1/airlines/${slug}`
         //console.log("this is url:", url)
-
         axios.get(url)
             //updates the airline with the response data
             .then(resp => {
@@ -54,16 +44,14 @@ const Airline = (props) => {
                 setLoaded(true)
             })
             .catch(resp => console.log(resp))
-
-
     }, [])
 
     const handleChange = (e) => {
-
-        // console.log('name:', e.target.name, 'value:', e.target.value)
+        // e.preventDefault()
         //how would you do this with a spread operator?
+        // setReview(Object.assign({}, ...review, {[e.target.name]: e.target.value})) maybe?
         setReview(Object.assign({}, review, { [e.target.name]: e.target.value }))
-        // setReview(Object.assign({}, ...review, {[e.target.name]: e.target.value}))
+        // console.log('name:', e.target.name, 'value:', e.target.value)
 
         console.log('review', review)
     }
@@ -81,13 +69,15 @@ const Airline = (props) => {
         const csrfToken = document.querySelector('[name=csrf-token').content
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
-        const airline_id = airline.data.id
+        const airline_id = parseInt(airline.data.id)
 
         axios.post('/api/v1/reviews', { review, airline_id })
             .then(resp => {
                 // debugger
-                const included = [...airline.included, resp.data.data]
+                const included = [...airline.included, resp.data.data] //resp.data
+                //should update value in state
                 setAirline({ ...airline, included })
+                //should update form & set it back to being empty
                 setReview({ title: "", description: "", score: 0 })
             })
             .catch(resp => { })
