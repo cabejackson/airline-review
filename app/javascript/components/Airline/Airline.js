@@ -27,7 +27,12 @@ padding-left: 50px;
 const Airline = (props) => {
 
     const [airline, setAirline] = useState({})
-    const [review, setReview] = useState({})
+    const [review, setReview] = useState({
+        title: "",
+        description: "",
+        score: 0,
+
+    })
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
@@ -55,10 +60,46 @@ const Airline = (props) => {
 
     const handleChange = (e) => {
 
-        console.log('name:', e.target.name, 'value:', e.target.value)
+        // console.log('name:', e.target.name, 'value:', e.target.value)
+        //how would you do this with a spread operator?
+        setReview(Object.assign({}, review, { [e.target.name]: e.target.value }))
+        // setReview(Object.assign({}, ...review, {[e.target.name]: e.target.value}))
+
+        console.log('review', review)
     }
+    //submit review to api & save to db
     const handleSubmit = (e) => {
         e.preventDefault()
+        //take the review that's built in the review object from state
+        //combine w/ an airline id, which is also in state
+        //submit the data to api
+
+        //take the data from the resp & update the state
+
+        //update header w/ axios and pull in csrfToken
+        //csrfToken?
+        const csrfToken = document.querySelector('[name=csrf-token').content
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+        const airline_id = airline.data.id
+
+        axios.post('/api/v1/reviews', { review, airline_id })
+            .then(resp => {
+                // debugger
+                const included = [...airline.included, resp.data.data]
+                setAirline({ ...airline, included })
+                setReview({ title: "", description: "", score: 0 })
+            })
+            .catch(resp => { })
+    }
+
+    const setRating = (score, e) => {
+        e.preventDefault()
+        // debugger
+
+        //update state to add the score into the review object
+        setReview({ ...review, score })
+
     }
 
 
@@ -81,6 +122,7 @@ const Airline = (props) => {
                         <ReviewForm
                             handleChange={handleChange}
                             handleSubmit={handleSubmit}
+                            setRating={setRating}
                             attributes={airline.data.attributes}
                             review={review}
                         />
