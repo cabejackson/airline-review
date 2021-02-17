@@ -69,12 +69,13 @@ const Airline = (props) => {
         const csrfToken = document.querySelector('[name=csrf-token').content
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
+        //Get airline id
         const airline_id = parseInt(airline.data.id)
-
         axios.post('/api/v1/reviews', { review, airline_id })
             .then(resp => {
                 // debugger
                 const included = [...airline.included, resp.data.data] //resp.data
+                console.log("included,", included)
                 //should update value in state
                 setAirline({ ...airline, included })
                 //should update form & set it back to being empty
@@ -83,15 +84,26 @@ const Airline = (props) => {
             .catch(resp => { })
     }
 
+    //set score
     const setRating = (score, e) => {
         e.preventDefault()
         // debugger
-
         //update state to add the score into the review object
         setReview({ ...review, score })
-
     }
 
+    let reviews
+    if (loaded && airline.included) {
+        reviews = airline.included.map((item, index) => {
+            console.log("mapping,", item)
+            return (
+                <Review
+                    key={index}
+                    attributes={item.attributes}
+                />
+            )
+        })
+    }
 
 
     return (
@@ -105,7 +117,7 @@ const Airline = (props) => {
                                 attributes={airline.data.attributes}
                                 reviews={airline.included}
                             />
-                            <div className="reviews"></div>
+                            {reviews}
                         </Main>
                     </Column>
                     <Column>
