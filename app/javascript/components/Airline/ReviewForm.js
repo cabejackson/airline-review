@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Gray from './Stars/Gray';
 import Hover from './Stars/Hover';
 import Selected from './Stars/Selected';
+import './ReviewForm/ReviewForm.css'
 
 const RatingContainer = styled.div`
     text-align: center;
@@ -163,9 +164,9 @@ const ReviewForm = (props) => {
                         </RatingBox>
                     </RatingContainer>
                 </Field>
-                <div>
-                    <button type="submit">Submit Your Review</button>
-                </div>
+
+                <button type="Submit" className="review-submit-btn">Submit Your Review</button>
+
             </form>
 
         </Wrapper>
