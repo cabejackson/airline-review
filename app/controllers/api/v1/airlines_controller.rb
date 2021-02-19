@@ -13,22 +13,21 @@ module Api
                 # (airlines, options).serialized_json
             end
             
-            
+            #specific method for showing ea airline
             def show 
                 #find airline based off of slug param
                 airline = Airline.find_by(slug: params[:slug])
                # byebug
-                #same as above, but just passing in the individual airline
+                #same as index above, but just passing in the individual airline
                 render json: AirlineSerializer.new(airline, options).serializable_hash.to_json
             end
 
             def create
                 #'add strong parameters" what does that mean?
-                #
                 airline = Airline.new(airline_params)
                 
             #if we're able to save the record & everything's valid 
-            #render the json "object" -- review json objects
+            #render the json object
                 if airline.save
                     render json: AirlineSerializer.new(airline).serializable_hash.to_json
             #otherwise render out some sort of error message
@@ -40,12 +39,11 @@ module Api
             
 
             #update method is v similar to create method above
-            #except do find_by instead of creating a new instance 
-            #(instead of .new  do .find_by)
+            #except do find_by to look for the airline & update it instead of creating a new instance 
             def update
                 airline = Airline.find_by(slug: params[:slug])
             #if we're able to update the record and everything's valid 
-            #render the json "object"
+            #render the json object
                 if airline.update(airline_params)
                     render json: AirlineSerializer.new(airline, options).serializable_hash.to_json #.serialized_json
             #otherwise render out some sort of error message
@@ -55,10 +53,10 @@ module Api
             end
 
             def destroy
-            #find airline by it's param
+            #find specific airline by it's param
                 airline = Airline.find_by(slug: params[:slug])
                 
-            #if we're able to save the record and everything's valid render the json "object"
+            #if we're able to save the record and everything's valid render the json object
                 if airline.destroy
                     head :no_content
             #otherwise render out some sort of error message
@@ -69,11 +67,11 @@ module Api
 
             
 
-            
+            #private methods?
             private 
 
             def airline_params
-                #setup allow list of the parameters we want to allow here, ie name, image url (just those 2 for now)
+                #setup allow list of the parameters to allow, ie name, image url
                 params.require(:airline).permit(:name, :image_url)
             end
 

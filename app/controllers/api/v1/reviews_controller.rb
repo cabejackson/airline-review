@@ -30,7 +30,7 @@ module Api
 
             private
 
-            # passing through airline as a param now
+            # passing through airline as a param
             def airline
                 @airline ||= Airline.find(params[:airline_id])
             end
