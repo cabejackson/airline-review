@@ -106,7 +106,9 @@ const ReviewForm = (props) => {
                     checked={props.review.score === score}
                     name="rating"
                     onChange={() => console.log('selected:', score)}
-                    id={`rating-${score}`} />
+                    id={`rating-${score}`}
+                    required
+                />
                 <label htmlFor="" onClick={props.setRating.bind(this, score)}></label>
             </Fragment>
         )
@@ -122,7 +124,9 @@ const ReviewForm = (props) => {
                         value={title}
                         type="text"
                         name="title"
-                        placeholder="Review Title" />
+                        placeholder="Review Title"
+                        required
+                    />
                 </Field>
                 <Field>
                     <input
@@ -131,6 +135,7 @@ const ReviewForm = (props) => {
                         type="text"
                         name="description"
                         placeholder="Review Description"
+                        required
                     />
                 </Field>
                 <Field>
