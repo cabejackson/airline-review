@@ -29,6 +29,7 @@ const Airline = (props) => {
 
     const [airline, setAirline] = useState({})
     const [review, setReview] = useState({ title: "", description: "", score: 0, })
+    // const [avg_review, setAvgReview] = useState({})
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
@@ -74,7 +75,7 @@ const Airline = (props) => {
         axios.post('/api/v1/reviews', { review, airline_id })
             .then(resp => {
                 // debugger
-                const included = [...airline.included, resp.data.data] //resp.data
+                const included = [...airline.included, resp.data.data,] //resp.data
                 console.log("included,", included)
                 //should update value in state
                 setAirline({ ...airline, included })
